@@ -17,7 +17,6 @@ COOKIE = os.environ["BARBORA_COOKIE"]
 MS_TEAMS_WEBHOOK = os.environ.get("MS_TEAMS_WEBHOOK")
 NOTIFICATIONS_TO_SEND = int(os.environ.get("NOTIFICATIONS_TO_SEND", "2"))
 
-
 DRY_RUN = os.environ.get("DRY_RUN")
 
 PUSH_BACK_SECONDS = int(os.environ.get("PUSH_BACK_BARBORA_API_IN_SECONDS", "30"))
