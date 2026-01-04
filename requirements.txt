@@ -1,16 +1,21 @@
-astroid==2.3.3
-certifi==2019.11.28
-chardet==3.0.4
-idna==2.9
-isort==4.3.21
-lazy-object-proxy==1.4.3
-mccabe==0.6.1
-PyJWT==1.7.1
-pylint==2.4.4
-pytz==2019.3
-requests==2.23.0
-six==1.14.0
-twilio==6.37.0
-typed-ast==1.4.1
-urllib3==1.25.8
-wrapt==1.11.2
+# Core runtime dependencies
+requests==2.32.3
+twilio==9.3.8
+PyJWT==2.10.1
+pytz==2024.2
+
+# HTTP and networking
+urllib3==2.2.3
+certifi==2024.12.14
+charset-normalizer==3.4.1
+idna==3.10
+
+# Development dependencies
+pylint==3.3.3
+astroid==3.3.8
+isort==5.13.2
+lazy-object-proxy==1.10.0
+mccabe==0.7.0
+wrapt==1.17.2
+six==1.17.0
+typed-ast==1.4.3
