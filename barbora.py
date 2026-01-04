@@ -73,35 +73,57 @@ def send_notifications():
 
 
 def send_message_to_teams(wehook, message):
-    message = {
-        "@context": "http://schema.org/extensions",
-        "@type": "MessageCard",
-        "title": "Barbora Bot",
-        "text": message,
+    # Using Adaptive Cards format (modern standard, replaces deprecated MessageCard)
+    adaptive_card = {
+        "type": "message",
+        "attachments": [
+            {
+                "contentType": "application/vnd.microsoft.card.adaptive",
+                "content": {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.4",
+                    "body": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Barbora Bot",
+                            "weight": "bolder",
+                            "size": "medium"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": message,
+                            "wrap": True
+                        }
+                    ]
+                }
+            }
+        ]
     }
-    requests.post(url=wehook, json=message)
+    requests.post(url=wehook, json=adaptive_card)
 
 
 def get_delivery_data():
+    r = None
     try:
         r = requests.request("GET", BARBORA_URL, headers=BARBORA_HEADERS)
         r.raise_for_status()
         return r
-    except requests.exceptions.RequestException as err:
-        print("OOps: Something Else", err)
-        if r.status_code == 401:
+    except requests.exceptions.HTTPError as errh:
+        print("Http Error:", errh)
+        if r is not None and r.status_code == 401:
             print("No need to run, cookie expired - access denied")
             if MS_TEAMS_WEBHOOK:
                 send_message_to_teams(
-                    MS_TEAMS_WEBHOOK, "Failure: Coockie expired. Bot stopped working"
+                    MS_TEAMS_WEBHOOK, "Failure: Cookie expired. Bot stopped working"
                 )
             sys.exit(0)
-    except requests.exceptions.HTTPError as errh:
-        print("Http Error:", errh)
     except requests.exceptions.ConnectionError as errc:
         print("Error Connecting:", errc)
     except requests.exceptions.Timeout as errt:
         print("Timeout Error:", errt)
+    except requests.exceptions.RequestException as err:
+        print("OOps: Something Else", err)
 
     return
 
